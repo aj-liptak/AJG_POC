@@ -13,6 +13,28 @@ define([
   'bootstrap'
 
 ], function($, _, Parse, HomeTemplate, ContactsCollection, Handsontable, ClientModel, jQueryUI, Bootstrap){
+
+  var tableValues = [
+    {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/9382/893641", "code": '9832', "policy": '893641'},
+    {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/97342/899732", "code": '97342', "policy": '899732'},
+    {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/23179/128462", "code": '23179', "policy": '128462'},
+    {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/19734/765321", "code": '19734', "policy": '765321'},
+    {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/93721/267523", "code": '93721', "policy": '267523'},
+    {"name": 'BONDED CONCRETE',  "clientInfo": "BONDED CONCRETE/ AMERITAS/2975/108563", "code": '2975', "policy": '108563'},
+    {"name": 'BONDED CONCRETE',  "clientInfo": "BONDED CONCRETE/ AMERITAS/9015/715021", "code": '9015', "policy": '715021'},
+    {"name": 'BONDED CONCRETE',  "clientInfo": "BONDED CONCRETE/ AMERITAS/58432/297510", "code": '58432', "policy": '297510'},
+    {"name": 'BONDED CONCRETE',  "clientInfo": "BONDED CONCRETE/ AMERITAS/12792/8275626", "code": '12792', "policy": '8275626'},
+    {"name": 'BUSINESS COUNCIL OF NYS, INC.',  "clientInfo": "BUSINESS COUNCIL/ AMERITAS/71285/97212", "code": '71285', "policy": '97212'},
+    {"name": 'BUSINESS COUNCIL OF NYS, INC.',  "clientInfo": "BUSINESS COUNCIL/ AMERITAS/27592/024122", "code": '27592', "policy": '024122'},
+    {"name": 'BUSINESS COUNCIL OF NYS, INC.',  "clientInfo": "BUSINESS COUNCIL/ AMERITAS/1543/543821", "code": '1543', "policy": '543821'},
+    {"name": 'CAPITAL CITIES LEASING CORP.',  "clientInfo": "CAPITAL CITIES/ AMERITAS/68261/397621", "code": '68261', "policy": '397621'},
+    {"name": 'CAPITAL CITIES LEASING CORP.',  "clientInfo": "CAPITAL CITIES/ AMERITAS/497321/863423", "code": '497321', "policy": '863423'},
+    {"name": 'CAPITAL CITIES LEASING CORP.',  "clientInfo": "CAPITAL CITIES/ AMERITAS/4197/635187", "code": '4197', "policy": '635187'},
+    {"name": 'TABNER, RYAN, & KENIRY',  "clientInfo": "TABNER, RYAN/ AMERITAS/0742/2107363", "code": '0742', "policy": '2107363'},
+    {"name": 'TABNER, RYAN, & KENIRY',  "clientInfo": "TABNER, RYAN/ AMERITAS/65540/91241", "code": '65540', "policy": '91241'},
+    {"name": 'TABNER, RYAN, & KENIRY',  "clientInfo": "TABNER, RYAN/ AMERITAS/237412/094745", "code": '237412', "policy": '094745'}
+  ];
+
   var HomeView = Parse.View.extend({
 
     el: $('#container'),
@@ -48,10 +70,6 @@ define([
       var data = [
       ];
 
-      var tableValues = [
-        {"name": 'ADVANCED ENERGY TECHNOLOGIES', "code": '9832', "policy": '893641'}
-      ];
-
       $('#orgUnit').typeahead({
         source: ['GBS']
       });
@@ -73,7 +91,8 @@ define([
       var unappliedAmount = 0;
 
 
-      var settings = {
+      var $container = $("#grid");
+      $container.handsontable({
         data: data,
         dataSchema: makeClient,
         contextMenu: true,
@@ -87,8 +106,17 @@ define([
             source: ["ADVANCED ENERGY TECHNOLOGIES", "BONDED CONCRETE", "BUSINESS COUNCIL OF NYS, INC.", "CAPITAL CITIES LEASING CORP.", "TABNER, RYAN, & KENIRY"], //empty string is a valid value
             strict: false
           },
-          {data: "code"},
-          {data: "policy"},
+          {
+            data: "code",
+            type: 'autocomplete',
+            strict: false
+
+          },
+          {
+            data: "policy",
+            type: 'autocomplete',
+            strict: false
+          },
           {data: "clientInfo"},
           {
             data: "period"
@@ -106,31 +134,25 @@ define([
         ],
         afterChange: function(changes, source) {
           var instance = $container.handsontable('getInstance');
+          var settings = instance.getSettings();
+          var data;
+
+          var key = changes[0][1];
+          var obj = {};
+          obj[key] = changes[0][3];
 
           if(changes && shouldExecute && changes[0][1] === 'name'){
             shouldExecute = false;
-            var contactsCollection = new ContactsCollection();
-            var tableValues = [
-              {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/AMERITAS/9382/893641", "code": '9832', "policy": '893641'},
-              {"name": 'BONDED CONCRETE',  "clientInfo": "BONDED CONCRETE/AMERITAS/7432/8275626", "code": '7432', "policy": '8275626'},
-              {"name": 'BUSINESS COUNCIL OF NYS, INC.',  "clientInfo": "BUSINESS COUNCIL/AMERITAS/1543/543821", "code": '1543', "policy": '543821'},
-              {"name": 'CAPITAL CITIES LEASING CORP.',  "clientInfo": "CAPITAL CITIES/AMERITAS/4197/635187", "code": '4197', "policy": '635187'},
-              {"name": 'TABNER, RYAN, & KENIRY',  "clientInfo": "TABNER, RYAN/AMERITAS/0742/2107363", "code": '0742', "policy": '2107363'}
 
-            ];
+            data = _.where(tableValues, obj);
 
-            var key = changes[0][1];
-            var obj = {};
-            obj[key] = changes[0][3];
-
-            var data = _.where(tableValues, obj);
-
-            var results = data[0];
-            //instance.setDataAtRowProp(0, 'name', results.name, this);
-            instance.setDataAtRowProp(changes[0][0], 'code', results.code, this);
-            instance.setDataAtRowProp(changes[0][0], 'policy', results.policy, this);
-            instance.setDataAtRowProp(changes[0][0], 'clientInfo', results.clientInfo, this);
             shouldExecute = true;
+
+            var settings = instance.getSettings();
+
+            settings.columns[1].source = _.pluck(data, 'code');
+            instance.updateSettings(settings);
+
 
           } else if(changes && changes[0][1] === 'receiptAmount'){
             receiptTotal = 0;
@@ -159,61 +181,34 @@ define([
               premiumTotal += premiumColumnFlat[k];
             }
             $('#premiumTotal').val(premiumTotal);
-          }
-        },
-        cells: function (row, col, prop) {
-          var cellProperties = {};
-          if (row === 0) {
-            cellProperties.renderer = firstRowRenderer; //uses function directly
+          } else if(changes && shouldExecute && changes[0][1] === 'code'){
+            shouldExecute = false;
+
+            data = _.where(tableValues, obj);
+
+            var results = data[0];
+
+            shouldExecute = true;
+
+            settings.columns[2].source = _.pluck(data, 'policy');
+            instance.updateSettings(settings);
+          } else if(changes && shouldExecute && changes[0][1] === 'policy'){
+            shouldExecute = false;
+            data = _.where(tableValues, obj);
+
+            var results = data[0];
+
+            instance.setDataAtRowProp(changes[0][0], 'clientInfo', results.clientInfo, this);
+            shouldExecute = true;
           }
         },
         minSpareRows: 1 //see notes on the left for `minSpareRows`
-      }
+      });
 
-      var $container = $("#grid");
-      $container.handsontable(settings);
-
-      this.settings = settings;
-      function firstRowRenderer(instance, td, row, col, prop, value, cellProperties) {
-        var data = td;
-        data.style.background = '#666';
-        window.Handsontable.TextCell.renderer.apply(this, instance, data, row, col, prop, value, cellProperties);
-      }
-
-
-      // you'll have to make something like these until there is a better
-  // way to use the string notation, i.e. "bb:make"!
-
-      // normally, you'd get these from the server with .fetch()
-      function attr(attr) {
-        // this lets us remember `attr` for when when it is get/set
-        return {data: function (car, value) {
-          if (_.isUndefined(value)) {
-            return car.get(attr);
-          }
-          car.set(attr, value);
-        }};
-      }
-
-
-// just setting `dataSchema: CarModel` would be great, but it is non-
-// trivial to detect constructors...
       function makeClient() {
         return new ClientModel();
       }
 
-// show a log of events getting fired
-      function log_events(event, model) {
-        var now = new Date();
-        $("#example1_events").prepend(
-            $("<option/>").text([
-              ":", now.getSeconds(), ":", now.getMilliseconds(),
-              "[" + event + "]",
-              JSON.stringify(model)
-            ].join(" "))
-          )
-          .scrollTop(0);
-      }
     }
 
   });
