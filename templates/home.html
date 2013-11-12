@@ -1,0 +1,136 @@
+<div class="span12" id="home">
+  <div>
+    <legend>Create Cash Receipt</legend>
+    <div class="span12">
+
+      <div class="span2 input-dropdown">
+        <div class="input-label">Org Unit</div>
+        <div class="input-append">
+          <input class="span2 input" id="orgUnit" type="text">
+          <div class="btn-group">
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item">GBS</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="span2">
+        <div class="input-label">Deposit #</div>
+        <div class="input">
+          <input class="span2" id="depositNumber" type="text">
+        </div>
+      </div>
+
+      <div class="span2">
+        <div class="input-label">Deposit Date</div>
+        <div class="input">
+          <input class="span2" id="depositDate" type="date">
+        </div>
+      </div>
+
+      <div class="span2">
+        <div class="input-label">Check Date</div>
+        <div class="input">
+          <input class="span2" id="checkDate" type="date">
+        </div>
+      </div>
+
+      <div class="span2 input-dropdown">
+        <div class="input-label">Status</div>
+        <div class="input-append">
+          <input class="span2" id="status" type="text" value="Active">
+          <div class="btn-group">
+            <button class="btn dropdown-toggle" id="statusButton" data-target="#" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item">Active</li>
+              <li class="dropdown-item">Delete</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="span2">
+        <div class="input-label">Check #</div>
+        <div class="input">
+          <input class="span2" id="checkNumber" type="text">
+        </div>
+      </div>
+
+      <div class="span2">
+        <div class="input-label">Check Amount</div>
+        <div class="input-prepend">
+          <div class="input">
+            <span class="add-on">$</span>
+            <input class="span2 check-amount" id="checkAmount" type="text">
+          </div>
+        </div>
+      </div>
+
+      <div class="span6 receipt-notes">
+        <div class="input-label">Receipt Notes</div>
+        <textarea class="span6" rows="8" id="receiptNotes"/>
+      </div>
+
+      <div class="span4 input-dropdown">
+        <div class="input-label">Carrier</div>
+        <div class="input-append">
+          <input class="span4" id="carrier" type="text">
+          <div class="btn-group">
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-item">Ameritas</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="span4 input-dropdown">
+        <div class="input-label">Payer</div>
+        <div class="input">
+          <input class="span4" id="payer" type="text">
+        </div>
+        </div>
+      </div>
+
+      <div class="span12" id="lowerItems">
+        <div class="span2 unappliedAmount">
+          <div class="input-label">Unapplied Amount</div>
+          <div class="input-prepend">
+            <div class="input">
+              <span class="add-on">$</span>
+              <input class="span2 check-amount" id="unappliedAmount" type="text" disabled>
+            </div>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="input-label">Premium Total</div>
+          <div class="input-prepend">
+            <div class="input">
+              <span class="add-on">$</span>
+              <input class="span2 check-amount" id="premiumTotal" type="text" disabled>
+            </div>
+          </div>
+        </div>
+
+        <div class="span2">
+          <div class="input-label">Receipt Total</div>
+          <div class="input-prepend">
+            <div class="input">
+              <span class="add-on">$</span>
+              <input class="span2 check-amount" id="receiptTotal" type="text" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

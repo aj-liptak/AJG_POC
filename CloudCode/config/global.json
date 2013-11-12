@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "POC": {
+            "applicationId": "x8Gw7rBpQkubRrCdOOeOzur16kJTWG58meBnGOaM", 
+            "masterKey": "bIQhXjy0k4cEqrLxsIvjaIyP8JebgCWNFawFcBuF"
+        }, 
+        "_default": {
+            "link": "POC"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.2.12"
+    }
+}
