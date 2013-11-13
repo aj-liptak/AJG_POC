@@ -114,8 +114,8 @@ define([
         dataSchema: makeClient,
         contextMenu: true,
         autoWrapRow: true,
-        colHeaders: ["Client Name", "Client Code", "Policy #", "Client/Policy/etc..", "Period", "Premium Amount", "Receipt Amount", "Notes"],
-        colWidths: [175, 100, 100, 185, 100, 125, 125, 125],
+        colHeaders: ["Client Name", "Client Code", "Policy #", "Client/Carrier/Product/Policy #/GL Code/Org Unit", "Period", "Premium Amount", "Receipt Amount", "Notes"],
+        colWidths: [125, 100, 100, 275, 100, 125, 125, 85],
         columns: [
           {
             data: 'name',
