@@ -21,14 +21,14 @@
       <div class="span2">
         <div class="input-label">Deposit #</div>
         <div class="input">
-          <input class="span2" id="depositNumber" type="text">
+          <input class="span2" id="depositNumber" type="text" value="957150367281" disabled>
         </div>
       </div>
 
       <div class="span2">
         <div class="input-label">Deposit Date</div>
         <div class="input">
-          <input class="span2" id="depositDate" type="date">
+          <input class="span2" id="depositDate" value="2011-09-01" min="2010-08-01" max="2013-12-01"  type="date">
         </div>
       </div>
 
@@ -74,7 +74,7 @@
 
       <div class="span6 receipt-notes">
         <div class="input-label">Receipt Notes</div>
-        <textarea class="span6" rows="8" id="receiptNotes"/>
+        <textarea class="span6" rows="11" id="receiptNotes"/>
       </div>
 
       <div class="span4 input-dropdown">
@@ -87,50 +87,56 @@
             </button>
             <ul class="dropdown-menu">
               <li class="dropdown-item">Ameritas</li>
+              <li class="dropdown-item">Aflac</li>
+              <li class="dropdown-item">Cigna</li>
+              <li class="dropdown-item">Standard Insurance</li>
             </ul>
           </div>
         </div>
       </div>
 
-      <div class="span4 input-dropdown">
+      <div class="span4 input-dropdown payee">
         <div class="input-label">Payer</div>
         <div class="input">
           <input class="span4" id="payer" type="text">
         </div>
-        </div>
       </div>
 
-      <div class="span12" id="lowerItems">
-        <div class="span2 unappliedAmount">
-          <div class="input-label">Unapplied Amount</div>
-          <div class="input-prepend">
-            <div class="input">
-              <span class="add-on">$</span>
-              <input class="span2 check-amount" id="unappliedAmount" type="text" disabled>
-            </div>
-          </div>
+      <div class="span4 input-dropdown">
+        <div class="input-label">Payee</div>
+        <div class="input">
+          <input class="span4" id="payee" type="text">
         </div>
+      </div>
+    </div>
 
-        <div class="span2">
-          <div class="input-label">Premium Total</div>
-          <div class="input-prepend">
-            <div class="input">
-              <span class="add-on">$</span>
-              <input class="span2 check-amount" id="premiumTotal" type="text" disabled>
-            </div>
-          </div>
-        </div>
+    <div class="span12" id="midItems">
+      <div class="span2">
+        <h4 class="span2 check-amount" id="premiumTotal">$0</h4>
+      </div>
 
-        <div class="span2">
-          <div class="input-label">Receipt Total</div>
-          <div class="input-prepend">
-            <div class="input">
-              <span class="add-on">$</span>
-              <input class="span2 check-amount" id="receiptTotal" type="text" disabled>
-            </div>
+      <div class="span2">
+        <h4 class="span2 check-amount" id="receiptTotal">$0</h4>
+      </div>
+    </div>
+
+
+    <div class="span12" id="lowerItems">
+
+      <div class="span2 unappliedAmount">
+        <div class="input-label">Unapplied Amount</div>
+        <div class="input-prepend">
+          <div class="input">
+            <span class="add-on">$</span>
+            <input class="span2 check-amount" id="unappliedAmount" type="text" disabled>
           </div>
         </div>
       </div>
+      <div class="span2 save">
+        <button type="button" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+
     </div>
   </div>
 </div>

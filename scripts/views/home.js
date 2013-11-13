@@ -13,7 +13,7 @@ define([
   'bootstrap'
 
 ], function($, _, Parse, HomeTemplate, ContactsCollection, Handsontable, ClientModel, jQueryUI, Bootstrap){
-
+  var test = 0;
   var tableValues = [
     {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/9382/893641", "code": '9832', "policy": '893641'},
     {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/97342/899732", "code": '97342', "policy": '899732'},
@@ -53,8 +53,19 @@ define([
     },
 
     events: {
-      'click .dropdown-item': 'onDropdownItem'
+      'click .dropdown-item': 'onDropdownItem',
+      'change #carrier': 'onPayerChange',
+      'change #checkAmount': 'onCheckAmount'
+    },
 
+    onPayerChange: function (e) {
+      e.stopPropagation();
+      $('#payer').val($('#carrier').val());
+    },
+
+    onCheckAmount: function (e) {
+      e.stopPropagation();
+      $('#unappliedAmount').val($('#checkAmount').val());
     },
 
     onDropdownItem: function (e) {
@@ -62,25 +73,30 @@ define([
       var element = $(e.currentTarget).closest('.input-append').children()[0];
       $(element).val(e.currentTarget.textContent);
       $(e.currentTarget).dropdown('toggle');
+
+      if(element.id === 'carrier'){
+        $('#payer').val($(element).val());
+        var settings = $('#grid').handsontable('getInstance').getSettings();
+        settings.columns[0].source = ["ADVANCED ENERGY TECHNOLOGIES", "BONDED CONCRETE", "BUSINESS COUNCIL OF NYS, INC.", "CAPITAL CITIES LEASING CORP.", "TABNER, RYAN, & KENIRY"];
+        settings.columns[3].source = ["ADVANCED ENERGY/ AMERITAS/9382/893641", "ADVANCED ENERGY/ AMERITAS/97342/899732", "ADVANCED ENERGY/ AMERITAS/23179/128462", "ADVANCED ENERGY/ AMERITAS/19734/765321", "ADVANCED ENERGY/ AMERITAS/93721/267523", "BONDED CONCRETE/ AMERITAS/2975/108563", "BONDED CONCRETE/ AMERITAS/9015/715021", "BONDED CONCRETE/ AMERITAS/58432/297510", "BONDED CONCRETE/ AMERITAS/12792/8275626", "BUSINESS COUNCIL/ AMERITAS/71285/97212", "BUSINESS COUNCIL/ AMERITAS/27592/024122", "BUSINESS COUNCIL/ AMERITAS/1543/543821", "CAPITAL CITIES/ AMERITAS/68261/397621", "CAPITAL CITIES/ AMERITAS/497321/863423", "CAPITAL CITIES/ AMERITAS/4197/635187", "TABNER, RYAN/ AMERITAS/0742/2107363", "TABNER, RYAN/ AMERITAS/65540/91241", "TABNER, RYAN/ AMERITAS/237412/094745"];
+        $('#grid').handsontable('getInstance').updateSettings(settings);
+      }
     },
 
     build: function () {
+
+      var date = new Date();
 
       var contactsCollection = new ContactsCollection();
       var data = [
       ];
 
-      $('#orgUnit').typeahead({
-        source: ['GBS']
+
+      $('#carrier').on('hidden.bs.dropdown', function () {
+        $('#payer').val($('#carrier').val());
       });
 
-      $('#status').typeahead({
-        source: ['Active', 'Delete']
-      });
-
-      $('#carrier').typeahead({
-        source: ['Ameritas']
-      });
+      $('#depositDate').val(date.toISOString().slice(0,10));
 
       contactsCollection.add(tableValues);
 
@@ -103,7 +119,7 @@ define([
           {
             data: 'name',
             type: 'autocomplete',
-            source: ["ADVANCED ENERGY TECHNOLOGIES", "BONDED CONCRETE", "BUSINESS COUNCIL OF NYS, INC.", "CAPITAL CITIES LEASING CORP.", "TABNER, RYAN, & KENIRY"], //empty string is a valid value
+            source: [], //empty string is a valid value
             strict: false
           },
           {
@@ -117,7 +133,11 @@ define([
             type: 'autocomplete',
             strict: false
           },
-          {data: "clientInfo"},
+          {
+            data: "clientInfo",
+            type: "autocomplete",
+            source: []
+          },
           {
             data: "period"
           },
@@ -133,26 +153,28 @@ define([
           {data: "notes"}
         ],
         afterChange: function(changes, source) {
+          test++;
+          console.log(test);
           var instance = $container.handsontable('getInstance');
           var settings = instance.getSettings();
           var data;
 
-          var key = changes[0][1];
           var obj = {};
-          obj[key] = changes[0][3];
+          if(changes && changes[0]){
+            var key = changes[0][1];
+            obj[key] = changes[0][3];
+          }
+
 
           if(changes && shouldExecute && changes[0][1] === 'name'){
             shouldExecute = false;
 
             data = _.where(tableValues, obj);
 
-            shouldExecute = true;
-
             var settings = instance.getSettings();
-
             settings.columns[1].source = _.pluck(data, 'code');
-            instance.updateSettings(settings);
 
+            instance.updateSettings(settings);
 
           } else if(changes && changes[0][1] === 'receiptAmount'){
             receiptTotal = 0;
@@ -161,7 +183,7 @@ define([
             for(var k=0; k < receiptColumnFlat.length; k++){
               receiptTotal += receiptColumnFlat[k];
             }
-            $('#receiptTotal').val(receiptTotal);
+            $('#receiptTotal').text('$' + receiptTotal);
 
             unappliedAmount = $('#checkAmount').val() - receiptTotal;
 
@@ -180,7 +202,7 @@ define([
             for(var k=0; k < premiumColumnFlat.length; k++){
               premiumTotal += premiumColumnFlat[k];
             }
-            $('#premiumTotal').val(premiumTotal);
+            $('#premiumTotal').text('$' + premiumTotal);
           } else if(changes && shouldExecute && changes[0][1] === 'code'){
             shouldExecute = false;
 
@@ -188,19 +210,19 @@ define([
 
             var results = data[0];
 
-            shouldExecute = true;
-
             settings.columns[2].source = _.pluck(data, 'policy');
             instance.updateSettings(settings);
           } else if(changes && shouldExecute && changes[0][1] === 'policy'){
-            shouldExecute = false;
+
             data = _.where(tableValues, obj);
 
             var results = data[0];
 
-            instance.setDataAtRowProp(changes[0][0], 'clientInfo', results.clientInfo, this);
-            shouldExecute = true;
+            settings.columns[3].source = _.pluck(data, 'clientInfo');
+            instance.updateSettings(settings);
           }
+
+          shouldExecute = true;
         },
         minSpareRows: 1 //see notes on the left for `minSpareRows`
       });

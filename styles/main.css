@@ -9,15 +9,6 @@ html, body {
   color: #666;
 }
 
-textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
-  border-color: rgba(133, 194, 43, 0.8);
-  outline: 0;
-  outline: thin dotted \9;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(133, 194, 43, 0.6);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(133, 194, 43, 0.6);
-}
-
 .span2.input-dropdown {
   margin-right: 30px;
 }
@@ -55,7 +46,7 @@ legend {
 
 .handsontable {
   margin-left: 75px;
-  margin-top: 300px;
+  margin-top: 350px;
 }
 
 tbody:first-child{
@@ -65,12 +56,32 @@ tbody:first-child{
 
 #lowerItems {
   position: absolute;
-  bottom: 50px;
+  bottom: 150px;
   margin: 0;
-  left: 175px;
+  left: 100px;
+}
+
+#midItems {
+  position: absolute;
+  bottom: 325px;
+  margin: 0;
+}
+
+#receiptTotal {
+  position: absolute;
+  right: 75px;
+}
+
+#premiumTotal {
+  position: absolute;
+  right: 195px;
 }
 
 #lowerItems .span2 {
+  margin-right: 30px;
+}
+
+#midItems .span2 {
   margin-right: 30px;
 }
 
@@ -97,4 +108,17 @@ tbody:first-child{
 
 #payer {
   width: 390px;
+}
+
+#payee {
+  width: 390px;
+}
+
+.span4.input-dropdown.payee{
+  margin-top: 5px;
+}
+
+.span2.save {
+  margin-left: 525px;
+  padding-top: 20px;
 }
