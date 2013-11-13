@@ -175,33 +175,6 @@ define([
 
             instance.updateSettings(settings);
             return;
-          } else if(changes && changes[0][1] === 'receiptAmount'){
-            receiptTotal = 0;
-            var receiptColumn = instance.getDataAtCol(6);
-            var receiptColumnFlat = _.compact(receiptColumn);
-            for(var k=0; k < receiptColumnFlat.length; k++){
-              receiptTotal += receiptColumnFlat[k];
-            }
-            $('#receiptTotal').text('$' + receiptTotal);
-
-            unappliedAmount = $('#checkAmount').val() - receiptTotal;
-
-            if(unappliedAmount === 0){
-              $('#unappliedAmount').addClass("correctAmount");
-            } else {
-              $('#unappliedAmount').removeClass("correctAmount");
-            }
-
-            $('#unappliedAmount').val(unappliedAmount);
-          }
-          else if(changes && changes[0][1] === 'premiumAmount'){
-            premiumTotal = 0;
-            var premiumColumn = instance.getDataAtCol(5);
-            var premiumColumnFlat = _.compact(premiumColumn);
-            for(var k=0; k < premiumColumnFlat.length; k++){
-              premiumTotal += premiumColumnFlat[k];
-            }
-            $('#premiumTotal').text('$' + premiumTotal);
           } else if(changes && shouldExecute && changes[0][1] === 'code'){
             shouldExecute = false;
 
@@ -222,6 +195,36 @@ define([
           }
 
           shouldExecute = true;
+        },
+        afterChange: function (changes, source){
+          var instance = $container.handsontable('getInstance');
+          if(changes && changes[0][1] === 'premiumAmount'){
+            premiumTotal = 0;
+            var premiumColumn = instance.getDataAtCol(5);
+            var premiumColumnFlat = _.compact(premiumColumn);
+            for(var k=0; k < premiumColumnFlat.length; k++){
+              premiumTotal += premiumColumnFlat[k];
+            }
+            $('#premiumTotal').text('$' + premiumTotal);
+          } else if(changes && changes[0][1] === 'receiptAmount'){
+            receiptTotal = 0;
+            var receiptColumn = instance.getDataAtCol(6);
+            var receiptColumnFlat = _.compact(receiptColumn);
+            for(var k=0; k < receiptColumnFlat.length; k++){
+              receiptTotal += receiptColumnFlat[k];
+            }
+            $('#receiptTotal').text('$' + receiptTotal);
+
+            unappliedAmount = $('#checkAmount').val() - receiptTotal;
+
+            if(unappliedAmount === 0){
+              $('#unappliedAmount').addClass("correctAmount");
+            } else {
+              $('#unappliedAmount').removeClass("correctAmount");
+            }
+
+            $('#unappliedAmount').val(unappliedAmount);
+          }
         },
         minSpareRows: 1 //see notes on the left for `minSpareRows`
       });
