@@ -172,7 +172,7 @@ define([
 
             var settings = instance.getSettings();
             settings.columns[1].source = _.pluck(data, 'code');
-
+            settings.columns[3].source = _.pluck(data, 'clientInfo');
             instance.updateSettings(settings);
             return;
           } else if(changes && shouldExecute && changes[0][1] === 'code'){
