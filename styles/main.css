@@ -122,3 +122,12 @@ tbody:first-child{
   margin-left: 525px;
   padding-top: 20px;
 }
+
+.button-container {
+  margin-left: 700px;
+  padding-top: 20px;
+}
+
+.btn.btn-primary.add-new {
+  width: 90px;
+}
