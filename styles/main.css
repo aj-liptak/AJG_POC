@@ -15,7 +15,7 @@ html, body {
 
 
 #checkAmount{
-  width: 160px;
+  width: 108px;
 }
 .span6.receipt-notes {
   margin-left: 45px;
@@ -63,7 +63,7 @@ tbody:first-child{
 
 #midItems {
   position: absolute;
-  bottom: 325px;
+  bottom: 300px;
   margin: 0;
 }
 
@@ -103,7 +103,7 @@ tbody:first-child{
 }
 
 .dropdown-item:hover {
-  background-color: #83C413;
+  background-color: #52A8EC;
 }
 
 #payer {

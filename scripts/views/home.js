@@ -13,7 +13,6 @@ define([
   'bootstrap'
 
 ], function($, _, Parse, HomeTemplate, ContactsCollection, Handsontable, ClientModel, jQueryUI, Bootstrap){
-  var test = 0;
   var tableValues = [
     {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/9382/893641", "code": '9832', "policy": '893641'},
     {"name": 'ADVANCED ENERGY TECHNOLOGIES', "clientInfo": "ADVANCED ENERGY/ AMERITAS/97342/899732", "code": '97342', "policy": '899732'},
@@ -80,6 +79,8 @@ define([
         settings.columns[0].source = ["ADVANCED ENERGY TECHNOLOGIES", "BONDED CONCRETE", "BUSINESS COUNCIL OF NYS, INC.", "CAPITAL CITIES LEASING CORP.", "TABNER, RYAN, & KENIRY"];
         settings.columns[3].source = ["ADVANCED ENERGY/ AMERITAS/9382/893641", "ADVANCED ENERGY/ AMERITAS/97342/899732", "ADVANCED ENERGY/ AMERITAS/23179/128462", "ADVANCED ENERGY/ AMERITAS/19734/765321", "ADVANCED ENERGY/ AMERITAS/93721/267523", "BONDED CONCRETE/ AMERITAS/2975/108563", "BONDED CONCRETE/ AMERITAS/9015/715021", "BONDED CONCRETE/ AMERITAS/58432/297510", "BONDED CONCRETE/ AMERITAS/12792/8275626", "BUSINESS COUNCIL/ AMERITAS/71285/97212", "BUSINESS COUNCIL/ AMERITAS/27592/024122", "BUSINESS COUNCIL/ AMERITAS/1543/543821", "CAPITAL CITIES/ AMERITAS/68261/397621", "CAPITAL CITIES/ AMERITAS/497321/863423", "CAPITAL CITIES/ AMERITAS/4197/635187", "TABNER, RYAN/ AMERITAS/0742/2107363", "TABNER, RYAN/ AMERITAS/65540/91241", "TABNER, RYAN/ AMERITAS/237412/094745"];
         $('#grid').handsontable('getInstance').updateSettings(settings);
+      } else if (element.id === 'checkAmountInput') {
+        $('#checkAmountButton').text(e.currentTarget.textContent);
       }
     },
 
@@ -152,9 +153,7 @@ define([
           },
           {data: "notes"}
         ],
-        afterChange: function(changes, source) {
-          test++;
-          console.log(test);
+        beforeChange: function(changes, source) {
           var instance = $container.handsontable('getInstance');
           var settings = instance.getSettings();
           var data;
@@ -175,7 +174,7 @@ define([
             settings.columns[1].source = _.pluck(data, 'code');
 
             instance.updateSettings(settings);
-
+            return;
           } else if(changes && changes[0][1] === 'receiptAmount'){
             receiptTotal = 0;
             var receiptColumn = instance.getDataAtCol(6);
